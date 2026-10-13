@@ -1,0 +1,4 @@
+project_id = "allende-app"
+
+[functions.evaluate-run]
+verify_jwt = true
