@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { computeMetrics, formatDuration, formatKm, formatPace, publicRoute } from '../../../supabase/functions/_shared/metrics';
+import { computeMetrics, formatDuration, formatKm, formatPace, publicRoute, smoothTrack } from '../../../supabase/functions/_shared/metrics';
 import { RouteMap } from '../../components/RouteMap';
 import { Button, Card, Chips, Field, Stat } from '../../components/ui';
 import { useAuth } from '../../lib/auth';
@@ -22,6 +22,7 @@ export default function SaveRun() {
   const { profile } = useAuth();
   const points = tracker.getPoints();
   const m = useMemo(() => computeMetrics(points), [points]);
+  const line = useMemo(() => smoothTrack(points).map((p) => [p.lat, p.lng] as [number, number]), [points]);
   const startedAt = points.length ? new Date(points[0].t) : new Date();
   const [title, setTitle] = useState(defaultTitle(startedAt));
   const [notes, setNotes] = useState('');
@@ -104,7 +105,12 @@ export default function SaveRun() {
           <Stat label="tiempo" value={formatDuration(m.durationS)} />
           <Stat label="min/km" value={formatPace(m.paceSPerKm)} />
         </View>
-        <RouteMap route={points.map((p) => [p.lat, p.lng] as [number, number])} interactive style={{ height: 240 }} />
+        <RouteMap route={line} interactive style={{ height: 240 }} />
+        {m.mocked && (
+          <Text style={[styles.muted, { marginTop: space(2) }]}>
+            Detectamos una app de ubicación simulada. Podés guardar la corrida, pero no suma para desafíos ni sorteos.
+          </Text>
+        )}
       </Card>
       <Field label="Título" value={title} onChangeText={setTitle} />
       <Field label="Notas (opcional)" value={notes} onChangeText={setNotes} multiline />

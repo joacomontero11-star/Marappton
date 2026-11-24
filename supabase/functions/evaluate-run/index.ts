@@ -51,7 +51,8 @@ Deno.serve(async (req) => {
     const points = (track?.points ?? []) as TrackPoint[];
     const m = computeMetrics(points);
     const lateMs = Date.parse(run.created_at) - Date.parse(run.ended_at);
-    const verified = points.length >= 2 && lateMs < MAX_SUBMIT_DELAY_H * 3600_000 && Date.parse(run.ended_at) <= Date.now() + 60_000;
+    // A fake-location app was used: keep the run, but it never counts for raffles.
+    const verified = !m.mocked && points.length >= 2 && lateMs < MAX_SUBMIT_DELAY_H * 3600_000 && Date.parse(run.ended_at) <= Date.now() + 60_000;
 
     // 2. Active challenges whose raffle is also active.
     const nowIso = new Date().toISOString();

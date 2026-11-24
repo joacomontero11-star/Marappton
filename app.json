@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Maratón App del Allende",
+    "name": "MarApptón del Allende",
     "slug": "maraton-app-allende",
     "scheme": "allendeapp",
     "version": "1.0.0",
@@ -47,7 +47,7 @@
       [
         "react-native-maps",
         {
-          "androidGoogleMapsApiKey": "REEMPLAZAR_CON_GOOGLE_MAPS_API_KEY"
+          "androidGoogleMapsApiKey": ""
         }
       ]
     ],
