@@ -53,6 +53,13 @@
     ],
     "experiments": {
       "typedRoutes": false
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ead2602a-6167-4f65-9cb6-bef5a58bc6a5"
+      }
+    },
+    "owner": "joacomontero11"
   }
 }
